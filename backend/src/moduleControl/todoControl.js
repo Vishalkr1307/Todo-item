@@ -29,7 +29,7 @@ router.post("",authinocate,body("name").isString().notEmpty().withMessage("it mu
 router.get("",async (req, res) => {
     try{
         const page=+req.query.page||1
-        const size=+req.query.size||5
+        const size=+req.query.size||10
         const skip=(page-1)*size
         const serch=req.query.serch
         if(serch){

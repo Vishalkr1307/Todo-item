@@ -5,6 +5,7 @@ import {Link as Rlink, useLocation, useNavigate} from "react-router-dom"
 import { addLoginData, gitAuthData, googleAuthData } from '../redux/auth/action'
 import { GoMarkGithub} from "react-icons/go";
 import {FaGoogle} from "react-icons/fa"
+import axios from 'axios'
 const initState ={
     email:"",
     password:""
@@ -33,15 +34,18 @@ export const Login = () => {
     const handleButton=()=>{
         dispatch(addLoginData(text))
         
-       
     }
     const handleGoogle=()=>{
-        dispatch(googleAuthData())
+        window.open("http://localhost:2345/auth/google")
+        
         
 
     }
+    
     const handleGithub=()=>{
-        dispatch(gitAuthData())
+        window.open("http://localhost:2345/auth/github")
+        
+        // dispatch(gitAuthData())
 
     }
     useEffect(()=>{
@@ -53,6 +57,8 @@ export const Login = () => {
         
 
     },[auth])
+    
+    
 
     
     

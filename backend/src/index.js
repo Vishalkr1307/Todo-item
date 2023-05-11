@@ -13,6 +13,8 @@ app.use("/signup",signup)
 app.use("/login",Login)
 app.use("/todo",Todo)
 app.use(cors())
+// app.use(passport.initialize())
+// app.use(passport.session())
 
 app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
 passport.serializeUser(function ({user,token},done){
@@ -22,10 +24,13 @@ passport.serializeUser(function ({user,token},done){
 
 })
 passport.deserializeUser(function ({user,token},done){
-  console.log("2")
   done(null,{user,token})
 
 
+})
+app.get("/auth/google/success",(req,res)=>{
+  console.log(req.user)
+  return res.status(200).send("Login successful")
 })
 
 app.get('/auth/google',
@@ -36,33 +41,24 @@ app.get('/auth/google',
 app.get( '/auth/google/callback',
     passport.authenticate( 'google', {
         
-        failureRedirect: '/login'
-}),async (req,res)=>{
-  try{
-    const {user,token}=req.user
-    return res.status(200).send({user,token})
+        failureRedirect: '/login',
+        successRedirect:'/'
+}))
 
-  }
-  catch(err){
-    return res.status(400).send(err)
-  }
   
+
   
 
   
   
-});
-app.get("/auth/google/success",(req,res)=>{
-  return res.status(200).send({user:req.user.user,token:req.user.token})
-})
-app.get("/auth/google/failure",(req,res)=>{
-  return res.status(200).redirect("/")
-})
+
+
+
 app.get('/auth/github',
   passport.authenticate('github', { scope: [ 'user:email' ] }));
 
 app.get('/auth/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect: '/login' ,successRedirect:'/'}),
   async function(req, res) {
     try{
     const {user,token}=req.user
@@ -75,9 +71,7 @@ app.get('/auth/github/callback',
   });
   app.use(express.static('/Users/mac/Desktop/code/Todo-item/fronted/build'));
 
-  // app.get('*', (req, res) => {
-  //   res.sendFile(path.resolve(__dirname, '/Users/mac/Desktop/code/Todo-item/fronted/build/index.html'));
-  //   })
+  
 
 
   
