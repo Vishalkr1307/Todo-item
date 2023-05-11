@@ -6,6 +6,7 @@ const Todo=require("./moduleControl/todoControl")
 const passport=require("./config/passport")
 const session=require("express-session")
 const cors=require("cors")
+const path=require("path")
 
 app.use(express.json())
 app.use("/signup",signup)
@@ -72,6 +73,15 @@ app.get('/auth/github/callback',
     return res.status(400).send(err)
   }
   });
+  app.use(express.static('/Users/mac/Desktop/code/Todo-item/fronted/build'));
+
+  // app.get('*', (req, res) => {
+  //   res.sendFile(path.resolve(__dirname, '/Users/mac/Desktop/code/Todo-item/fronted/build/index.html'));
+  //   })
+
+
+  
+
 
 
 module.exports=app
